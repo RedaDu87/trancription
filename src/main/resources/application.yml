@@ -8,7 +8,7 @@ spring:
       max-request-size: 200000000000000000
 
 openai:
-  api-key: ${OPENAI_API_KEY:${OPENAI_API_KEY_FILE}}
+  api-key: ${OPENAI_API_KEY:/run/secrets/openai_api_key}
   base-url: https://api.openai.com/v1
   transcription-model: gpt-4o-mini-transcribe
   translation-model: gpt-4o-mini
