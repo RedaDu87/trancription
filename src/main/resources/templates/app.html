@@ -6,8 +6,8 @@
 
     <style>
         body {
-            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont;
-            background: linear-gradient(135deg, #0f172a, #020617);
+            font-family: Inter, system-ui;
+            background: radial-gradient(circle at top, #020617, #000);
             min-height: 100vh;
             margin: 0;
             display: flex;
@@ -17,103 +17,99 @@
         }
 
         .app {
-            background: rgba(15,23,42,0.9);
-            backdrop-filter: blur(12px);
             width: 100%;
-            max-width: 680px;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 0 80px rgba(0,0,0,.6);
+            max-width: 720px;
+            background: rgba(15,23,42,.9);
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 0 100px rgba(0,0,0,.6);
         }
 
         h1 {
             text-align: center;
             font-size: 28px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
-        .upload-box {
-            border: 2px dashed #3b82f6;
+        .uploader {
+            background: linear-gradient(180deg,#020617,#020617);
+            border: 2px solid #1e293b;
             border-radius: 16px;
             padding: 40px 20px;
             text-align: center;
             cursor: pointer;
-            transition: 0.3s;
+            transition: .3s;
         }
 
-        .upload-box:hover {
-            background: rgba(59,130,246,0.1);
+        .uploader:hover {
+            border-color: #3b82f6;
+            background: rgba(59,130,246,.06);
         }
 
-        .upload-box p {
-            color: #93c5fd;
-            margin-top: 12px;
-        }
-
-        .upload-box input {
+        .uploader input {
             display: none;
         }
 
-        .file-name {
+        .uploader span {
+            display: block;
+            font-size: 18px;
+            color: #93c5fd;
+        }
+
+        .file {
             margin-top: 10px;
             font-size: 14px;
-            color: #a5b4fc;
+            color: #c7d2fe;
         }
 
         .btn {
             width: 100%;
+            margin-top: 25px;
             padding: 16px;
-            background: linear-gradient(135deg,#3b82f6,#6366f1);
-            border-radius: 12px;
-            border: none;
-            color: white;
             font-size: 18px;
             font-weight: bold;
-            margin-top: 20px;
+            background: linear-gradient(135deg,#3b82f6,#6366f1);
+            border-radius: 14px;
+            border: none;
+            color: white;
             cursor: pointer;
-        }
-
-        .btn:disabled {
-            opacity: .6;
         }
 
         .progress {
             margin-top: 20px;
             background: #1e293b;
-            border-radius: 10px;
+            height: 18px;
+            border-radius: 20px;
             overflow: hidden;
-            height: 16px;
         }
 
         .bar {
             height: 100%;
             background: linear-gradient(90deg,#22c55e,#4ade80);
             width: 0%;
-            transition: .5s;
+            transition: .6s;
         }
 
         .processing {
             margin-top: 15px;
-            font-size: 16px;
             color: #93c5fd;
+            font-size: 16px;
             text-align: center;
         }
 
         textarea {
             width: 100%;
-            height: 300px;
+            height: 350px;
             margin-top: 20px;
             background: #020617;
-            border-radius: 10px;
+            border-radius: 14px;
             border: none;
-            padding: 15px;
+            padding: 16px;
             color: white;
         }
 
         @media(max-width:600px){
-            .app {
-                padding: 20px;
-            }
+            .app { padding: 20px; }
         }
     </style>
 </head>
@@ -125,18 +121,19 @@
     <h1>🎧 AI Audio Transcription</h1>
 
     <div id="upload">
-        <label class="upload-box">
+        <label class="uploader">
             <input type="file" id="file" name="file" onchange="pick(this)">
-            <strong>Click to select audio or video</strong>
-            <p>MP3, MP4, WAV, M4A, YouTube rips</p>
-            <div class="file-name" id="fileName"></div>
+            <span>Click to choose an audio or video file</span>
+            <div class="file" id="fileName"></div>
         </label>
 
         <button class="btn" id="btn" onclick="upload()">Transcribe</button>
     </div>
 
     <div id="progress" style="display:none;">
-        <div class="processing">Processing<span id="dots"></span> please wait</div>
+        <div class="processing">
+            Processing<span id="dots"></span> please wait
+        </div>
         <div class="progress"><div class="bar" id="bar"></div></div>
         <div class="processing" id="chunks"></div>
         <div class="processing" id="eta"></div>
@@ -156,7 +153,7 @@
 
     function pick(el){
         file=el.files[0];
-        document.getElementById("fileName").innerText = file.name;
+        document.getElementById("fileName").innerText=file.name;
     }
 
     function upload(){
@@ -189,12 +186,10 @@
         fetch("/api/job/"+jobId)
             .then(r=>r.json())
             .then(j=>{
-                let percent = Math.round(j.doneChunks / j.totalChunks * 100);
-                document.getElementById("bar").style.width = percent+"%";
-                document.getElementById("chunks").innerText = j.doneChunks+" / "+j.totalChunks;
-
-                let remaining = (j.totalChunks - j.doneChunks) * 4;
-                document.getElementById("eta").innerText = "ETA ~ "+remaining+" min";
+                let percent=Math.round(j.doneChunks/j.totalChunks*100);
+                document.getElementById("bar").style.width=percent+"%";
+                document.getElementById("chunks").innerText=j.doneChunks+" / "+j.totalChunks;
+                document.getElementById("eta").innerText="ETA ~ "+((j.totalChunks-j.doneChunks)*4)+" min";
 
                 if(j.status==="DONE"){
                     document.getElementById("progress").style.display="none";
