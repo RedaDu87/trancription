@@ -7,6 +7,10 @@ RUN mvn clean package -DskipTests
 
 # Étape 2 : Image finale exécutable
 FROM eclipse-temurin:21-jdk-alpine
+
+# Installer ffmpeg
+RUN apk add --no-cache ffmpeg
+
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
