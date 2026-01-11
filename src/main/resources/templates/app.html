@@ -7,22 +7,22 @@
     <style>
         body {
             font-family: Inter, system-ui, -apple-system;
-            background: radial-gradient(circle at top, #020617, #000);
+            background: linear-gradient(120deg,#f8fafc,#e2e8f0);
             min-height: 100vh;
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #0f172a;
         }
 
         .app {
             width: 100%;
             max-width: 720px;
-            background: rgba(15,23,42,.95);
+            background: white;
             border-radius: 18px;
             padding: 30px;
-            box-shadow: 0 0 100px rgba(0,0,0,.6);
+            box-shadow: 0 10px 40px rgba(0,0,0,.08);
         }
 
         h1 {
@@ -34,8 +34,8 @@
         /* Picker */
 
         .picker {
-            background: #020617;
-            border: 1px solid #1e293b;
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
             border-radius: 16px;
             padding: 40px 20px;
             text-align: center;
@@ -52,7 +52,7 @@
 
         .subtitle {
             font-size: 14px;
-            color: #94a3b8;
+            color: #64748b;
             margin-top: 6px;
         }
 
@@ -64,6 +64,7 @@
             border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
+            color: white;
         }
 
         .pick-btn input {
@@ -73,7 +74,7 @@
         .file-name {
             margin-top: 12px;
             font-size: 14px;
-            color: #c7d2fe;
+            color: #334155;
         }
 
         /* Buttons */
@@ -89,17 +90,35 @@
             border: none;
             color: white;
             cursor: pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
         }
 
         .btn:disabled {
             opacity: .6;
         }
 
+        /* Spinner */
+        .spinner {
+            width:20px;
+            height:20px;
+            border:3px solid rgba(255,255,255,.4);
+            border-top-color:white;
+            border-radius:50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Progress */
 
         .progress {
             margin-top: 20px;
-            background: #1e293b;
+            background: #e2e8f0;
             height: 18px;
             border-radius: 20px;
             overflow: hidden;
@@ -114,7 +133,7 @@
 
         .processing {
             margin-top: 15px;
-            color: #93c5fd;
+            color: #1d4ed8;
             font-size: 16px;
             text-align: center;
         }
@@ -125,11 +144,11 @@
             width: 100%;
             height: 350px;
             margin-top: 20px;
-            background: #020617;
+            background: #f8fafc;
             border-radius: 14px;
-            border: none;
+            border: 1px solid #cbd5e1;
             padding: 16px;
-            color: white;
+            color: #0f172a;
             font-family: monospace;
         }
 
@@ -162,7 +181,10 @@
             <div class="file-name" id="fileName"></div>
         </div>
 
-        <button class="btn" id="btn" onclick="upload()">Transcribe</button>
+        <button class="btn" id="btn" onclick="upload()">
+            <span id="btnText">Transcribe</span>
+            <div id="spinner" class="spinner" style="display:none"></div>
+        </button>
     </div>
 
     <!-- Progress -->
@@ -198,7 +220,8 @@
     function upload(){
         if(!file){ alert("Select a file"); return; }
 
-        document.getElementById("btn").innerText="Uploading...";
+        document.getElementById("btnText").innerText="Uploading";
+        document.getElementById("spinner").style.display="block";
         document.getElementById("btn").disabled=true;
 
         let fd=new FormData();
