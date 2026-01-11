@@ -6,7 +6,7 @@
 
     <style>
         body {
-            font-family: Inter, system-ui;
+            font-family: Inter, system-ui, -apple-system;
             background: radial-gradient(circle at top, #020617, #000);
             min-height: 100vh;
             margin: 0;
@@ -19,7 +19,7 @@
         .app {
             width: 100%;
             max-width: 720px;
-            background: rgba(15,23,42,.9);
+            background: rgba(15,23,42,.95);
             border-radius: 18px;
             padding: 30px;
             box-shadow: 0 0 100px rgba(0,0,0,.6);
@@ -31,36 +31,52 @@
             margin-bottom: 30px;
         }
 
-        .uploader {
-            background: linear-gradient(180deg,#020617,#020617);
-            border: 2px solid #1e293b;
+        /* Picker */
+
+        .picker {
+            background: #020617;
+            border: 1px solid #1e293b;
             border-radius: 16px;
             padding: 40px 20px;
             text-align: center;
+        }
+
+        .icon {
+            font-size: 40px;
+        }
+
+        .title {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        .pick-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: linear-gradient(135deg,#3b82f6,#6366f1);
+            border-radius: 10px;
             cursor: pointer;
-            transition: .3s;
+            font-weight: bold;
         }
 
-        .uploader:hover {
-            border-color: #3b82f6;
-            background: rgba(59,130,246,.06);
-        }
-
-        .uploader input {
+        .pick-btn input {
             display: none;
         }
 
-        .uploader span {
-            display: block;
-            font-size: 18px;
-            color: #93c5fd;
-        }
-
-        .file {
-            margin-top: 10px;
+        .file-name {
+            margin-top: 12px;
             font-size: 14px;
             color: #c7d2fe;
         }
+
+        /* Buttons */
 
         .btn {
             width: 100%;
@@ -74,6 +90,12 @@
             color: white;
             cursor: pointer;
         }
+
+        .btn:disabled {
+            opacity: .6;
+        }
+
+        /* Progress */
 
         .progress {
             margin-top: 20px;
@@ -97,6 +119,8 @@
             text-align: center;
         }
 
+        /* Result */
+
         textarea {
             width: 100%;
             height: 350px;
@@ -106,7 +130,10 @@
             border: none;
             padding: 16px;
             color: white;
+            font-family: monospace;
         }
+
+        /* Responsive */
 
         @media(max-width:600px){
             .app { padding: 20px; }
@@ -120,25 +147,37 @@
 
     <h1>🎧 AI Audio Transcription</h1>
 
+    <!-- Upload -->
     <div id="upload">
-        <label class="uploader">
-            <input type="file" id="file" name="file" onchange="pick(this)">
-            <span>Click to choose an audio or video file</span>
-            <div class="file" id="fileName"></div>
-        </label>
+        <div class="picker">
+            <div class="icon">📁</div>
+            <div class="title">Select audio or video</div>
+            <div class="subtitle">MP3, MP4, WAV, M4A – up to 3h</div>
+
+            <label class="pick-btn">
+                Choose file
+                <input type="file" id="file" name="file" onchange="pick(this)">
+            </label>
+
+            <div class="file-name" id="fileName"></div>
+        </div>
 
         <button class="btn" id="btn" onclick="upload()">Transcribe</button>
     </div>
 
+    <!-- Progress -->
     <div id="progress" style="display:none;">
         <div class="processing">
             Processing<span id="dots"></span> please wait
         </div>
-        <div class="progress"><div class="bar" id="bar"></div></div>
+        <div class="progress">
+            <div class="bar" id="bar"></div>
+        </div>
         <div class="processing" id="chunks"></div>
         <div class="processing" id="eta"></div>
     </div>
 
+    <!-- Result -->
     <div id="result" style="display:none;">
         <textarea id="text"></textarea>
         <button class="btn" onclick="location.reload()">New file</button>
@@ -152,8 +191,8 @@
     let dots=0;
 
     function pick(el){
-        file=el.files[0];
-        document.getElementById("fileName").innerText=file.name;
+        file = el.files[0];
+        document.getElementById("fileName").innerText = file.name;
     }
 
     function upload(){
