@@ -4,8 +4,10 @@ services:
 
   app:
     image: anikondu87/transcription-app:latest
+    secrets:
+      - openai_api_key
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_API_KEY_FILE=/run/secrets/openai_api_key
     networks:
       - traefik-net
     deploy:
@@ -19,4 +21,8 @@ services:
         - "traefik.http.services.transcription.loadbalancer.server.port=8080"
 networks:
   traefik-net:
+    external: true
+
+secrets:
+  openai_api_key:
     external: true
