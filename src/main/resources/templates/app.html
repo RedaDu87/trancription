@@ -54,7 +54,7 @@
 
     <!-- UPLOAD -->
     <div id="upload">
-        <input type="file" id="file"/>
+        <input type="file" id="file" name="file"/>
         <br><br>
         <button onclick="upload()">Transcrire</button>
     </div>
@@ -82,8 +82,14 @@
     let jobId = null;
 
     function upload() {
+
         const f = document.getElementById("file").files[0];
         const fd = new FormData();
+        if (!f) {
+            alert("Please select a file");
+            return;
+        }
+
         fd.append("file", f);
 
         fetch("/upload", {method:"POST", body: fd})
