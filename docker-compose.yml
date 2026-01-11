@@ -12,9 +12,9 @@ services:
       replicas: 1
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.hamsterdeal.rule=Host(`transcription.hamsterdeal.ch`)"
-        - "traefik.http.routers.hamsterdeal.entrypoints=websecure"
-        - "traefik.http.services.hamsterdeal.loadbalancer.server.port=80"
+        - "traefik.http.routers.transcription.rule=Host(`transcription.hamsterdeal.ch`)"
+        - "traefik.http.routers.transcription.entrypoints=websecure"
+        - "traefik.http.services.transcription.loadbalancer.server.port=80"
         - "traefik.docker.network=traefik-net"
 networks:
   traefik-net:
