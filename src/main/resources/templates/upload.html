@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload audio</title>
+</head>
+<body>
+<h2>🎙 Upload Audio (jusqu'à 3h)</h2>
+
+<form method="post" action="/upload" enctype="multipart/form-data">
+    <input type="file" name="file" required/>
+    <br/><br/>
+    <button type="submit">🚀 Lancer transcription</button>
+</form>
+
+</body>
+</html>

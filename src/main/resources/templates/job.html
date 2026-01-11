@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="refresh" content="3"/>
+</head>
+<body>
+
+<h2>Job [[${job.id}]]</h2>
+
+<p>Status: <b th:text="${job.status}"></b></p>
+
+<p th:if="${job.totalChunks > 0}">
+    Chunks: [[${job.doneChunks}]] / [[${job.totalChunks}]]
+</p>
+
+<p>Progression: [[${job.progressPercent()}]]%</p>
+
+<div th:if="${job.status.name() == 'DONE'}">
+    <a th:href="@{'/job/' + ${job.id} + '/result'}">📄 Voir résultat</a>
+</div>
+
+<div th:if="${job.status.name() == 'FAILED'}">
+    ❌ Erreur: [[${job.error}]]
+</div>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2000000000000000000
+      max-request-size: 200000000000000000
+
+openai:
+  api-key: ${OPENAI_API_KEY}
+  base-url: https://api.openai.com/v1
+  transcription-model: gpt-4o-mini-transcribe
+  translation-model: gpt-4o-mini
+
+app:
+  workdir: ./work
+  chunk:
+    seconds: 600   # 7 min (~13.4 MB en wav mono 16kHz)
+  concurrency: 4

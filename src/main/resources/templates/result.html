@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<h2>Résultat</h2>
+
+<div style="margin-bottom: 15px;">
+    <a href="/"
+       style="padding:8px 14px;
+              background:#222;
+              color:white;
+              text-decoration:none;
+              border-radius:6px;">
+        ⬅ Retour à l’upload
+    </a>
+</div>
+
+<h3>Transcription</h3>
+
+<textarea cols="100" rows="20" th:text="${job.result.original}"></textarea>
+
+</body>
+</html>
