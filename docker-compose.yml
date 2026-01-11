@@ -10,12 +10,13 @@ services:
       - traefik-net
     deploy:
       replicas: 1
+      restart_policy:
+        condition: any
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.transcription.rule=Host(`transcription.hamsterdeal.ch`)"
         - "traefik.http.routers.transcription.entrypoints=websecure"
-        - "traefik.http.services.transcription.loadbalancer.server.port=80"
-        - "traefik.docker.network=traefik-net"
+        - "traefik.http.services.transcription.loadbalancer.server.port=8080"
 networks:
   traefik-net:
     external: true
