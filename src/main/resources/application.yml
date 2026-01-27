@@ -4,15 +4,15 @@ server:
     threads:
       max: 500          # Support 500 concurrent connections
       min-spare: 50     # Keep at least 50 threads ready
-    max-connections: 10000  # Maximum connections in the queue
+    max-connections: 2000  # Maximum connections in the queue
     accept-count: 500   # Backlog queue size
   connection-timeout: 60000  # 60 seconds timeout
 
 spring:
   servlet:
     multipart:
-      max-file-size: 2000000000000000000
-      max-request-size: 200000000000000000
+      max-file-size: 2GB  # Maximum file size (3 hours of audio)
+      max-request-size: 2GB  # Maximum request size
   task:
     execution:
       pool:

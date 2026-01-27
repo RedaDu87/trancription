@@ -8,7 +8,7 @@ services:
       - openai_api_key
     environment:
       - OPENAI_API_KEY_FILE=/run/secrets/openai_api_key
-      - JAVA_OPTS=-Xmx2g -Xms1g -XX:+UseG1GC -XX:MaxGCPauseMillis=200
+      - JAVA_OPTS=-Xmx1536m -Xms1g -XX:+UseG1GC -XX:MaxGCPauseMillis=200
     networks:
       - traefik-net
     deploy:
@@ -30,7 +30,6 @@ services:
         - "traefik.http.routers.transcription.rule=Host(`transcription.hamsterdeal.ch`)"
         - "traefik.http.routers.transcription.entrypoints=websecure"
         - "traefik.http.services.transcription.loadbalancer.server.port=8080"
-        - "traefik.http.services.transcription.loadbalancer.sticky.cookie=true"
         - "traefik.http.services.transcription.loadbalancer.healthcheck.path=/actuator/health"
         - "traefik.http.services.transcription.loadbalancer.healthcheck.interval=10s"
 
