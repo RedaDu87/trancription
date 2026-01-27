@@ -1,11 +1,33 @@
 server:
   port: 8080
+  tomcat:
+    threads:
+      max: 500          # Support 500 concurrent connections
+      min-spare: 50     # Keep at least 50 threads ready
+    max-connections: 10000  # Maximum connections in the queue
+    accept-count: 500   # Backlog queue size
+  connection-timeout: 60000  # 60 seconds timeout
 
 spring:
   servlet:
     multipart:
       max-file-size: 2000000000000000000
       max-request-size: 200000000000000000
+  task:
+    execution:
+      pool:
+        core-size: 50
+        max-size: 500
+        queue-capacity: 1000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
 
 openai:
   api-key: ${OPENAI_API_KEY:/run/secrets/openai_api_key}
@@ -17,4 +39,4 @@ app:
   workdir: ./work
   chunk:
     seconds: 600   # 7 min (~13.4 MB en wav mono 16kHz)
-  concurrency: 4
+  concurrency: 8   # Increased from 4 to 8 for better throughput
